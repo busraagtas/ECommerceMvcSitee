@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Security;
 using ECommerceMvcSite.Models;
 
 namespace ECommerceMvcSite.Controllers
@@ -8,17 +10,6 @@ namespace ECommerceMvcSite.Controllers
     public class AccountController : Controller
     {
         private MyDbContext db = new MyDbContext();
-
-        // Yardımcı fonksiyon: Şifreyi Hash'le
-        private string HashPassword(string password)
-        {
-            using (var sha = System.Security.Cryptography.SHA256.Create())
-            {
-                var bytes = System.Text.Encoding.UTF8.GetBytes(password);
-                var hash = sha.ComputeHash(bytes);
-                return Convert.ToBase64String(hash);
-            }
-        }
 
         // Giriş Sayfası (GET)
         public ActionResult Login()
@@ -28,27 +19,33 @@ namespace ECommerceMvcSite.Controllers
 
         // Giriş Sayfası (POST)
         [HttpPost]
-        public ActionResult Login(string email, string password)
+        public ActionResult Login(string email, string password, bool? isAdmin)
         {
-            string hashedPassword = HashPassword(password);
-
-            var user = db.Users.FirstOrDefault(x => x.Email == email && x.Password == hashedPassword);
-
-            if (user != null)
+            var user = db.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            if (user == null)
             {
-                Session["UserId"] = user.Id;
-                Session["Username"] = user.Username;
-                Session["IsAdmin"] = user.IsAdmin;
-                Session["UserEmail"] = user.Email;
-                Session["UserFirstName"] = user.FirstName;
-                Session["UserLastName"] = user.LastName;
-
-                return RedirectToAction("Index", "Home");
+                ViewBag.Error = "Geçersiz giriş bilgileri!";
+                return View();
             }
 
-            ViewBag.Error = "Kullanıcı adı veya şifre hatalı";
-            return View();
+            Session["UserId"] = user.Id;
+            Session["Username"] = user.Username;
+            Session["IsAdmin"] = user.IsAdmin;
+            Session["UserEmail"] = user.Email;
+            Session["UserFirstName"] = user.FirstName;
+            Session["UserLastName"] = user.LastName;
+
+            if (user.IsAdmin)
+            {
+                return RedirectToAction("AdminPanel", "Admin");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
+
+
 
         // Kayıt Sayfası (GET)
         public ActionResult Register()
@@ -64,40 +61,32 @@ namespace ECommerceMvcSite.Controllers
             {
                 if (db.Users.Any(u => u.Email == user.Email))
                 {
-                    ViewBag.Error = "Bu e-posta adresi ile daha önce kayıt olmuş bir kullanıcı var.";
+                    ViewBag.Error = "Bu e-posta adresi ile daha önce kayıt olunmuş.";
                     return View(user);
                 }
 
                 if (db.Users.Any(u => u.Username == user.Username))
                 {
-                    ViewBag.Error = "Bu kullanıcı adı ile daha önce kayıt olmuş bir kullanıcı var.";
+                    ViewBag.Error = "Bu kullanıcı adı ile daha önce kayıt olunmuş.";
                     return View(user);
                 }
 
-                user.Password = HashPassword(user.Password);
                 db.Users.Add(user);
                 db.SaveChanges();
 
-                Session["UserId"] = user.Id;
-                Session["Username"] = user.Username;
-                Session["IsAdmin"] = user.IsAdmin;
-                Session["UserEmail"] = user.Email;
-                Session["UserFirstName"] = user.FirstName;
-                Session["UserLastName"] = user.LastName;
-
                 return RedirectToAction("Login");
             }
+
             return View(user);
         }
 
-        // Çıkış İşlemi
         public ActionResult Logout()
         {
+            FormsAuthentication.SignOut();
             Session.Clear();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login");
         }
 
-        // Profil Sayfası
         public ActionResult Profile()
         {
             string email = Session["UserEmail"]?.ToString();
@@ -109,18 +98,30 @@ namespace ECommerceMvcSite.Controllers
             return View(user);
         }
 
-        // ✅ Siparişlerim Sayfası
         public ActionResult MyOrders()
         {
-            string email = Session["UserEmail"]?.ToString();
-            if (string.IsNullOrEmpty(email))
+            if (Session["UserEmail"] == null)
                 return RedirectToAction("Login");
+
+            string email = Session["UserEmail"].ToString();
 
             var orders = db.Orders
                            .Where(o => o.UserEmail == email && !o.IsCancelled)
+                           .Include(o => o.Items.Select(i => i.Product))
                            .ToList();
 
-            return View("ConfirmedOrders", orders); // Confirmed.cshtml dosyasını kullan
+            return View("ConfirmedOrders", orders);
+        }
+
+        public ActionResult AdminPanel()
+        {
+            if (Session["IsAdmin"] == null || !(bool)Session["IsAdmin"])
+            {
+                return RedirectToAction("Login");
+            }
+
+            var products = db.Products.ToList();
+            return View(products);
         }
     }
 }

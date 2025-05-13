@@ -87,6 +87,17 @@
                         </div>
                     </div>
                 }
+                else if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"])
+                {
+                    <span class="welcome-text">Hoş geldin Admin</span>
+                    <div class="dropdown">
+                        <span id="menuToggle" class="dropdown-toggle">&#8942;</span>
+                        <div id="userMenu" class="dropdown-menu" style="display: none;">
+                            <a href="@Url.Action("AdminPanel", "Account")">Ürünler</a>
+                            <a href="@Url.Action("Logout", "Account")">Çıkış Yap</a>
+                        </div>
+                    </div>
+                }
                 else
                 {
                     <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Giriş Yap</a>

@@ -85,3 +85,7 @@ C:\Users\Büşra Ağtaş\Desktop\ECommerceMvcSite\ECommerceMvcSite\ECommerceMvcS
 C:\Users\Büşra Ağtaş\Desktop\ECommerceMvcSite\ECommerceMvcSite\ECommerceMvcSite\bin\tr\System.Web.Mvc.resources.dll
 C:\Users\Büşra Ağtaş\Desktop\ECommerceMvcSite\ECommerceMvcSite\ECommerceMvcSite\obj\Debug\ECommerceMvcSite.Migrations.AddCancelledOrderSystem.resources
 C:\Users\Büşra Ağtaş\Desktop\ECommerceMvcSite\ECommerceMvcSite\ECommerceMvcSite\obj\Debug\ECommerceMvcSite.Migrations.AddIsCancelledToOrder.resources
+C:\Users\Büşra Ağtaş\Desktop\ECommerceMvcSite\ECommerceMvcSite\ECommerceMvcSite\obj\Debug\ECommerceMvcSite.Migrations.AddAdminTableAndSeed.resources
+C:\Users\Büşra Ağtaş\Desktop\ECommerceMvcSite\ECommerceMvcSite\ECommerceMvcSite\obj\Debug\ECommerceMvcSite.Migrations.RenameAdminUsernameToEmail.resources
+C:\Users\Büşra Ağtaş\Desktop\ECommerceMvcSite\ECommerceMvcSite\ECommerceMvcSite\obj\Debug\ECommerceMvcSite.Migrations.AddAdminTable.resources
+C:\Users\Büşra Ağtaş\Desktop\ECommerceMvcSite\ECommerceMvcSite\ECommerceMvcSite\obj\Debug\ECommerceMvcSite.Migrations.AddAdminTableAgain.resources

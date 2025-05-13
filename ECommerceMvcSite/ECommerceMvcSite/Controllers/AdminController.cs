@@ -1,62 +1,47 @@
-﻿using System.Linq;
+﻿using ECommerceMvcSite.Models;
+using System.Linq;
 using System.Web.Mvc;
-using ECommerceMvcSite.Models;
 
-namespace ECommerceMvcSite.Controllers
+public class AdminController : Controller
 {
-    public class AdminController : Controller
+    private MyDbContext db = new MyDbContext();
+
+    // Login sayfası
+    public ActionResult Login()
     {
-        private MyDbContext db = new MyDbContext();
+        return View();
+    }
 
-        // Admin yetkisi kontrolü
-        private bool IsAdmin()
+    // Giriş işlemi
+    [HttpPost]
+    public ActionResult Login(LoginModel model)
+    {
+        if (ModelState.IsValid)
         {
-            return Session["IsAdmin"] != null && (bool)Session["IsAdmin"];
-        }
-
-        public ActionResult AdminPanel()
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
-
-            var products = db.Products.ToList();
-            return View(products);
-        }
-
-        public ActionResult AddProduct()
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
-
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult AddProduct(Product product)
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
-
-            if (ModelState.IsValid)
+            var admin = db.Admins.FirstOrDefault(a => a.Email == model.Email && a.Password == model.Password);
+            if (admin != null)
             {
-                db.Products.Add(product);
-                db.SaveChanges();
+                Session["AdminId"] = admin.Id;
                 return RedirectToAction("AdminPanel");
             }
-
-            return View(product);
-        }
-
-        public ActionResult DeleteProduct(int id)
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
-
-            var product = db.Products.Find(id);
-            if (product != null)
+            else
             {
-                db.Products.Remove(product);
-                db.SaveChanges();
+                ViewBag.ErrorMessage = "Hatalı email veya şifre!";
             }
-
-            return RedirectToAction("AdminPanel");
         }
+        return View(model);
+    }
+    // Admin Dashboard
+    public ActionResult AdminPanel()
+    {
+        // Admin girişi kontrolü
+        if (Session["IsAdmin"] == null || !(bool)Session["IsAdmin"])
+        {
+            return RedirectToAction("Login", "Admin");
+        }
+
+        // Ürünler ve admin işlemleri
+        var products = db.Products.ToList();
+        return View(products);
     }
 }
-

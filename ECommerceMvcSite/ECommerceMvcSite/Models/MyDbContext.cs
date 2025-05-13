@@ -9,5 +9,6 @@ namespace ECommerceMvcSite.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<CancelledOrder> CancelledOrders { get; set; }
+        public DbSet<Admin> Admins { get; set; }  // Admin DbSet'ini ekleyin
     }
 }

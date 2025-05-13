@@ -1,0 +1,28 @@
+﻿@model ECommerceMvcSite.Models.LoginModel
+
+@{
+    ViewBag.Title = "Admin Girişi";
+}
+
+<h2>Admin Girişi</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style="color: red;">@ViewBag.ErrorMessage</p>
+}
+
+@using (Html.BeginForm("Login", "Admin", FormMethod.Post)) // DOĞRU
+
+{
+    <div>
+        <label>Email</label>
+        @Html.TextBoxFor(m => m.Email)
+    </div>
+    <div>
+        <label>Şifre</label>
+        @Html.PasswordFor(m => m.Password)
+    </div>
+    <div>
+        <input type="submit" value="Giriş Yap" />
+    </div>
+}

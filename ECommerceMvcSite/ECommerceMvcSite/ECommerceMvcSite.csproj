@@ -182,10 +182,27 @@
     <Compile Include="Migrations\202505091917194_AddIsCancelledToOrder.Designer.cs">
       <DependentUpon>202505091917194_AddIsCancelledToOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202505101059089_AddAdminTableAndSeed.cs" />
+    <Compile Include="Migrations\202505101059089_AddAdminTableAndSeed.Designer.cs">
+      <DependentUpon>202505101059089_AddAdminTableAndSeed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202505101306387_RenameAdminUsernameToEmail.cs" />
+    <Compile Include="Migrations\202505101306387_RenameAdminUsernameToEmail.Designer.cs">
+      <DependentUpon>202505101306387_RenameAdminUsernameToEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202505101523262_AddAdminTable.cs" />
+    <Compile Include="Migrations\202505101523262_AddAdminTable.Designer.cs">
+      <DependentUpon>202505101523262_AddAdminTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202505101539477_AddAdminTableAgain.cs" />
+    <Compile Include="Migrations\202505101539477_AddAdminTableAgain.Designer.cs">
+      <DependentUpon>202505101539477_AddAdminTableAgain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\CancelledOrder.cs" />
     <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MyDbContext.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderItem.cs" />
@@ -282,6 +299,7 @@
     <Content Include="Views\Account\MyOrders.cshtml" />
     <Content Include="Views\Account\CancelledOrders.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Admin\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -333,6 +351,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202505091917194_AddIsCancelledToOrder.resx">
       <DependentUpon>202505091917194_AddIsCancelledToOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505101059089_AddAdminTableAndSeed.resx">
+      <DependentUpon>202505101059089_AddAdminTableAndSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505101306387_RenameAdminUsernameToEmail.resx">
+      <DependentUpon>202505101306387_RenameAdminUsernameToEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505101523262_AddAdminTable.resx">
+      <DependentUpon>202505101523262_AddAdminTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505101539477_AddAdminTableAgain.resx">
+      <DependentUpon>202505101539477_AddAdminTableAgain.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

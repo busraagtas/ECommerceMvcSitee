@@ -2,24 +2,87 @@
 
 <h2>Onaylı Siparişler</h2>
 
-<table>
-    <thead>
-        <tr>
-            <th>Sipariş ID</th>
-            <th>Tarih</th>
-            <th>Durum</th>
-            <th>Toplam Fiyat</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
-        {
-            <tr>
-                <td>@order.Id</td>
-                <td>@order.OrderDate</td>
-                <td>@order.Status</td>
-                <td>@order.Items.Sum(i => i.Quantity * i.Product.Price)</td>
-            </tr>
+<style>
+    .order-card {
+        border: 1px solid #ccc;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .order-header {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .product-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .product-item {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fff;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .product-item img {
+        width: 80px;
+        height: auto;
+        margin-right: 15px;
+        border-radius: 4px;
+    }
+
+    .product-details {
+        font-size: 14px;
+        color: #333;
+    }
+
+    .total-price {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    /* Media query for small screens */
+  
         }
-    </tbody>
-</table>
+    }
+</style>
+
+@foreach (var order in Model)
+{
+    <div class="order-card">
+        <div class="order-header">
+            Sipariş ID: @order.Id<br />
+            Tarih: @order.OrderDate<br />
+            Durum: @order.Status
+        </div>
+
+        <ul class="product-list">
+            @foreach (var item in order.Items)
+            {
+                <li class="product-item">
+                    <img src="@item.Product.ImageUrl" alt="@item.Product.Name" />
+                    <div class="product-details">
+                        <strong>@item.Product.Name</strong><br />
+                        Adet: @item.Quantity<br />
+                        Fiyat: @item.Product.Price ₺
+                    </div>
+                </li>
+            }
+        </ul>
+
+        <div class="total-price">Toplam: @order.Items.Sum(i => i.Quantity * i.Product.Price) ₺</div>
+    </div>
+}
